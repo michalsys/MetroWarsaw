@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block block_1 %}
+    <ul>
+    {% for character in object_list %}
+        <li>Character: <a href="{% url 'continue' character.id %}">{{ character.name }}</a>
+            <p>Last played: {{ character.save_date }}</p></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
