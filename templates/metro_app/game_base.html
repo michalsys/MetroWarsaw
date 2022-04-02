@@ -1,0 +1,25 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <title>Metro Warsaw</title>
+</head>
+<body>
+<p class="title">Metro Warsaw: The Game</p>
+<div class="topnav">
+    <a href="{% url 'index' %}">Main page</a>
+        <a href="{% url 'new_game' %}">New game</a>
+        <a href="{% url 'character_list' %}">Character list</a>
+        <a href="{% url 'logout' %}">Logout</a>
+</div>
+<p>
+    {% block block_1 %}
+    {% endblock %}
+</p>
+</body>
+</html>
