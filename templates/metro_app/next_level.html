@@ -1,13 +1,61 @@
 {% extends 'metro_app/game_base.html' %}
 {% block block_1 %}
-    <h1>{{ location.name }}</h1>
-<p>
-    {{ location.description }}
-</p>
-<form method="post" class="form">
-    {% csrf_token %}
-        <table class="table">{{ form.as_table }}</table>
-    <button onclick=window.location.href='{% url 'game' location.id %}'>Go forward</button>
-    </form>
-
+    <div>
+        {% if location.id is 1 %}
+            <h1 class="title">{{ location }}</h1>
+            <p class="description">Your goal is to gather 100 bullets. See if You can achieve that!</p>
+        {% endif %}
+        {% if event %}
+        <p class="description">{{ event.description }}</p>
+        {% endif %}
+        <p>
+        {% if enemies_quant %}
+            <p class ="description">You've encountered {{ enemies_quant }} enemies!</p>
+            <ul>
+            {% for enemy in enemies %}
+                <li><b>{{ enemy }}</b>
+                    <p>Health: {{ enemy.health }}</p>
+                    <p>Bullets: {{ enemy.bullets }}</p>
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% if hp_lost %}
+            <p class="description">You lost {{ hp_lost }} health during the encounter.</p>
+        {% endif %}
+        <p>
+        {% if bullets_in_plus %}
+            <p class="description">You managed to find or loot {{ bullets_in_plus }} bullets.</p>
+        {% endif %}
+        {% if bullets_in_minus %}
+            {% if character.bullets is 0 %}
+                <p class="description">You have lost all of Your bullets!</p>
+            {% else %}
+                <p class="description">You lost {{ bullets_in_minus }} bullets during the encounter.</p>
+            {% endif %}
+        {% endif %}
+        <p>
+        {% if faction %}
+            <p class="description">This area is controlled by {{ faction }}.</p>
+        {% else %}
+            <p class="description">This area is not under direct control of any large faction.</p>
+    {% endif %}
+        <form method="post" class="form">
+            {% csrf_token %}
+            <table class="table">{{ form.as_p }}</table>
+            <button onclick=window.location.href='{% url 'game' character.id %}'>Go forward</button>
+        </form>
+    </div>
+    <div class="botnav">
+        <p><b>Current health: {{ character.health }}/5</b></p>
+        <p><b>Bullets: {{ character.bullets }}</b></p>
+    </div>
+    <div class="list">
+        <p><b>Equipment:</b>
+        <ul>
+        {% for item in equipment %}
+            <li>{{ item }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

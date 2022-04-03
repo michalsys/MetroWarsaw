@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block block_1 %}
+    {% if not object_list %}
+    <p>You have not created a character yet. Click <a href='{% url 'new_game' %}'>here</a> to start Your journey!</p>
+    {% else %}
     <ul>
     {% for character in object_list %}
-        <li>Character: <a href="{% url 'continue' character.id %}">{{ character.name }}</a>
-            <p>Last played: {{ character.save_date }}</p></li>
+        <li>Character: {{ character.name }}
+            <p>Last played: {{ character.save_date }}</p>
+            <p><button onclick=window.location.href='{% url 'game' character.id %}'>Continue game</button>
+           <button onclick=window.location.href='{% url 'delete' character.id %}'>Delete character</button></p></li>
     {% endfor %}
     </ul>
+    {% endif %}
 {% endblock %}
