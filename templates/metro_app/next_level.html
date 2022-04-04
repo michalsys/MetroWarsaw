@@ -35,11 +35,13 @@
             {% endif %}
         {% endif %}
         <p>
+        <!---
         {% if faction %}
             <p class="description">This area is controlled by {{ faction }}.</p>
         {% else %}
             <p class="description">This area is not under direct control of any large faction.</p>
-    {% endif %}
+        {% endif %}
+        --->
         <form method="post" class="form">
             {% csrf_token %}
             <table class="table">{{ form.as_p }}</table>
