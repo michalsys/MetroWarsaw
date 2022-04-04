@@ -126,16 +126,42 @@ class GameView(UserPassesTestMixin, LoginRequiredMixin, View):
                 if old_event:
                     old_event.delete()
                 return render(request, 'metro_app/next_level.html',
-                              {'character': character, 'location': new_location, 'base_event_id': base_event_id,
-                               'event': new_event, 'faction': faction, 'equipment': equipment,
-                               'bullets_in_plus': bullets_in_plus, 'bullets_in_minus': bullets_shot,
-                               'enemies_quant': enemies_quant, 'enemies': enemies, 'hp_lost': hp_lost})
+                              {'character': character,
+                               'base_location_id': base_location_id,
+                               'location': new_location,
+                               'base_event_id': base_event_id,
+                               'event': new_event,
+                               'faction': faction,
+                               'equipment': equipment,
+                               'bullets_in_plus': bullets_in_plus,
+                               'bullets_in_minus': bullets_shot,
+                               'enemies_quant': enemies_quant,
+                               'enemies': enemies,
+                               'hp_lost': hp_lost})
             else:
                 character.save()
                 return redirect(reverse('death', args=[id]))
         elif character.bullets > 99:
             character.save()
             return redirect(reverse('victory', args=[id]))
+
+
+class RestView(UserPassesTestMixin, LoginRequiredMixin, View):
+    def test_func(self):
+        character = Character.objects.get(pk=self.kwargs['id'])
+        return character.user_id == self.request.user.id
+
+    def get(self, request, id):
+        return render(request, 'form.html', {'rest': True})
+
+    def post(self, request, id):
+        character = Character.objects.get(pk=id)
+        character.health += 5
+        if character.health > 10:
+            character.health = 10
+        character.bullets -= 5
+        character.save()
+        return redirect(reverse('game', args=[id]))
 
 
 class WinningScreenView(UserPassesTestMixin, LoginRequiredMixin, View):

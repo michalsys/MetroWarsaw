@@ -15,7 +15,6 @@
             {% for enemy in enemies %}
                 <li><b>{{ enemy }}</b>
                     <p>Health: {{ enemy.health }}</p>
-                    <p>Bullets: {{ enemy.bullets }}</p>
                 </li>
             {% endfor %}
             </ul>
@@ -29,12 +28,16 @@
         {% endif %}
         {% if bullets_in_minus %}
             {% if character.bullets is 0 %}
-                <p class="description">You have lost all of Your bullets!</p>
+                <p class="description">You have lost all of Your bullets in the encounter!</p>
             {% else %}
                 <p class="description">You lost {{ bullets_in_minus }} bullets during the encounter.</p>
             {% endif %}
         {% endif %}
         <p>
+        {% if base_location_id is 2 or base_location_id is 4 %}
+            <p class="description">Friendly locals are offering You a place to rest for a mere price of 5 bullets. Are You interested?</p>
+            <button onclick=window.location.href='{% url 'rest' character.id %}'>Rest</button>
+        {% endif %}
         <!---
         {% if faction %}
             <p class="description">This area is controlled by {{ faction }}.</p>
@@ -49,7 +52,7 @@
         </form>
     </div>
     <div class="botnav">
-        <p><b>Current health: {{ character.health }}/5</b></p>
+        <p><b>Current health: {{ character.health }}/10</b></p>
         <p><b>Bullets: {{ character.bullets }}</b></p>
     </div>
     <div class="list">

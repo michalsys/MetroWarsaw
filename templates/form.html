@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block block_1 %}
+    {% if deletion %}
+        <p class="description">Are You sure You want to delete this character? It won't be possible to recover it.</p>
+    {% endif %}
+    {% if victory %}
+        <p class="description">You managed to achieve Your goal and gather 100 bullets, in a true show of perseverance.<br>
+    Dare You trying again?</p>
+    {% endif %}
+    {% if death %}
+        <p class="description">You unfortunately died in an encounter, and Your body will be left to perish.<br>
+    Dare You trying again?</p>
+    {% endif %}
+    {% if rest %}
+        <p class="description">You wake up well rested. You regained 5 health.</p>
+    {% endif %}
+    <form method="post" class="form">
+    {% csrf_token %}
+        <table class="table">{{ form.as_table }}</table>
+    <input type="submit" class="submit">
+    </form>
+{% endblock %}
