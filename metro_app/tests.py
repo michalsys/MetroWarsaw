@@ -176,3 +176,21 @@ def test_death_view_too_healthy(user, character_fresh):
     client.force_login(user)
     response = client.get(url)
     assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_game_view_death(user, character_death, locations, events, factions):
+    client = Client()
+    url = reverse('game', args=[character_death.id])
+    client.force_login(user)
+    response = client.post(url)
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_game_view_victory(user, character_victory, locations, events, factions):
+    client = Client()
+    url = reverse('game', args=[character_victory.id])
+    client.force_login(user)
+    response = client.post(url)
+    assert response.status_code == 302
