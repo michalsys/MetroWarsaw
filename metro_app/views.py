@@ -16,11 +16,17 @@ from random import randint
 
 
 class IndexView(View):
+    """
+    That one is pretty self-explanatory.
+    """
     def get(self, request):
         return render(request, 'index.html')
 
 
 class NewCharacterView(LoginRequiredMixin, View):
+    """
+    Create a new character assigned to the User model.
+    """
     def get(self, request):
         form = NewCharacterForm()
         return render(request, 'form.html', {'form': form})
@@ -37,6 +43,9 @@ class NewCharacterView(LoginRequiredMixin, View):
 
 
 class CharacterListView(LoginRequiredMixin, ListView):
+    """
+    List of characters associated with logged User, allowing to continue a started game.
+    """
     def get_queryset(self):
         user = User.objects.get(id=self.request.user.id)
         return Character.objects.filter(user=user)
@@ -44,6 +53,9 @@ class CharacterListView(LoginRequiredMixin, ListView):
 
 
 class DeleteCharacterView(UserPassesTestMixin, LoginRequiredMixin, View):
+    """
+    Character deletion view.
+    """
     def test_func(self):
         character = Character.objects.get(pk=self.kwargs['id'])
         return character.user_id == self.request.user.id
@@ -58,6 +70,9 @@ class DeleteCharacterView(UserPassesTestMixin, LoginRequiredMixin, View):
 
 
 class GameView(UserPassesTestMixin, LoginRequiredMixin, View):
+    """
+    Main game view, revolving around itself to create new locations and populate them for the Character to pass through.
+    """
     def test_func(self):
         character = Character.objects.get(pk=self.kwargs['id'])
         return character.user_id == self.request.user.id
@@ -147,6 +162,9 @@ class GameView(UserPassesTestMixin, LoginRequiredMixin, View):
 
 
 class RestView(UserPassesTestMixin, LoginRequiredMixin, View):
+    """
+    Allows the character to get some HP back for a small price in bullets.
+    """
     def test_func(self):
         character = Character.objects.get(pk=self.kwargs['id'])
         return character.user_id == self.request.user.id and character.bullets > 4
@@ -165,6 +183,9 @@ class RestView(UserPassesTestMixin, LoginRequiredMixin, View):
 
 
 class WinningScreenView(UserPassesTestMixin, LoginRequiredMixin, View):
+    """
+    Player gets redirected here when he achieves winning condition.
+    """
     def test_func(self):
         if self.request.method == 'GET':
             character = Character.objects.get(pk=self.kwargs['id'])
@@ -182,6 +203,9 @@ class WinningScreenView(UserPassesTestMixin, LoginRequiredMixin, View):
 
 
 class CharacterDeathView(UserPassesTestMixin, LoginRequiredMixin, View):
+    """
+        Player gets redirected here when he achieves losing condition.
+        """
     def test_func(self):
         if self.request.method == 'GET':
             character = Character.objects.get(pk=self.kwargs['id'])
