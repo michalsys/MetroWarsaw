@@ -194,3 +194,15 @@ def test_game_view_victory(user, character_victory, locations, events, factions,
     client.force_login(user)
     response = client.post(url)
     assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_game_view(user, character_fresh, locations, events, factions, enemies):
+    client = Client()
+    url = reverse('game', args=[character_fresh.id])
+    client.force_login(user)
+    character_location = character_fresh.location
+    response = client.post(url)
+    character_fresh.refresh_from_db()
+    assert response.status_code == 200
+    assert character_location != character_fresh.location
