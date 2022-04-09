@@ -100,7 +100,7 @@ class GameView(UserPassesTestMixin, LoginRequiredMixin, View):
                 new_enemy.pk = None
                 new_enemy.location = new_location
                 new_enemy.health = randint(1, base_enemy.health)
-                new_enemy.bullets = randint(1, base_enemy.bullets)
+                new_enemy.bullets = randint(0, base_enemy.bullets) + 1
                 bullets_found += new_enemy.bullets
                 bullets_shot += new_enemy.health
                 new_enemy.save()

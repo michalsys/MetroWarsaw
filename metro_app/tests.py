@@ -179,7 +179,7 @@ def test_death_view_too_healthy(user, character_fresh):
 
 
 @pytest.mark.django_db
-def test_game_view_death(user, character_death, locations, events, factions):
+def test_game_view_death(user, character_death, locations, events, factions, enemies):
     client = Client()
     url = reverse('game', args=[character_death.id])
     client.force_login(user)
@@ -188,7 +188,7 @@ def test_game_view_death(user, character_death, locations, events, factions):
 
 
 @pytest.mark.django_db
-def test_game_view_victory(user, character_victory, locations, events, factions):
+def test_game_view_victory(user, character_victory, locations, events, factions, enemies):
     client = Client()
     url = reverse('game', args=[character_victory.id])
     client.force_login(user)
