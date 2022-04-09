@@ -2,7 +2,7 @@ import pytest
 from random import randint
 from django.contrib.auth.models import User
 
-from metro_app.models import Character, Location
+from metro_app.models import Character, Location, Event, Faction, Enemy
 
 
 @pytest.fixture
@@ -15,6 +15,12 @@ def user():
 def location():
     location = Location.objects.create(name='x', threat_level='1')
     return location
+
+
+@pytest.fixture
+def event():
+    event = Event.objects.create(name='y')
+    return event
 
 
 @pytest.fixture
@@ -51,3 +57,47 @@ def characters(user, location):
         )
         characters.append(character)
     return characters
+
+
+@pytest.fixture
+def locations():
+    locations = []
+    for x in range(10):
+        location = Location.objects.create(
+            name='x', threat_level='1'
+        )
+        locations.append(location)
+    return locations
+
+
+@pytest.fixture
+def events():
+    events = []
+    for x in range(10):
+        event = Event.objects.create(
+            name='x'
+        )
+        events.append(event)
+    return events
+
+
+@pytest.fixture
+def factions():
+    factions = []
+    for x in range(10):
+        faction = Faction.objects.create(
+            name='x'
+        )
+        factions.append(faction)
+    return factions
+
+
+@pytest.fixture
+def enemies():
+    enemies = []
+    for x in range(10):
+        enemy = Enemy.objects.create(
+            name='x'
+        )
+        enemies.append(enemy)
+    return enemies
