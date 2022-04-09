@@ -17,7 +17,7 @@ from random import randint
 
 class IndexView(View):
     def get(self, request):
-        return render(request, 'base.html')
+        return render(request, 'index.html')
 
 
 class NewCharacterView(LoginRequiredMixin, View):
@@ -38,8 +38,8 @@ class NewCharacterView(LoginRequiredMixin, View):
 
 class CharacterListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
-        user_id = User.objects.get(id=self.request.user.id)
-        return Character.objects.filter(user=user_id)
+        user = User.objects.get(id=self.request.user.id)
+        return Character.objects.filter(user=user)
     template_name = 'metro_app/character_list.html'
 
 
@@ -149,7 +149,7 @@ class GameView(UserPassesTestMixin, LoginRequiredMixin, View):
 class RestView(UserPassesTestMixin, LoginRequiredMixin, View):
     def test_func(self):
         character = Character.objects.get(pk=self.kwargs['id'])
-        return character.user_id == self.request.user.id
+        return character.user_id == self.request.user.id and character.bullets > 4
 
     def get(self, request, id):
         return render(request, 'form.html', {'rest': True})
